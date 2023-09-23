@@ -1,0 +1,97 @@
+.edit-page {
+    max-width: 845px;
+    margin: auto;
+
+    &__back-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &__wrapper {
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px 30px;
+    }
+
+    &__back-btn-text {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 25px;
+        letter-spacing: -0.035em;
+        text-align: left;
+        color: #2d9cdb;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+
+    &__header {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 33px;
+        letter-spacing: -0.035em;
+        color: #000000;
+    }
+
+    &__paragraph {
+        padding-top: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: -0.035em;
+        color: #828282;
+    }
+
+    &__edit-photo {
+        padding-top: 20px;
+    }
+
+    &__edit-photo-text {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: -0.035em;
+        color: #828282;
+        padding-left: 30px;
+        text-transform: uppercase;
+    }
+
+    &__elem-input {
+        border: 1px solid #bdbdbd;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    &__elem-input-elem {
+        padding: 2px;
+        border: transparent;
+        width: 100%;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #b1aeae;
+            font-family: Noto Sans;
+        }
+    }
+
+    &__submit-btn {
+        background-color: #2f80ed;
+        color: #ffffff;
+        width: 82px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #2f80ed;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+}
