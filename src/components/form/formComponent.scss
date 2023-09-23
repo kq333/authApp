@@ -1,0 +1,104 @@
+.log-in {
+    max-width: 474px;
+    width: 100%;
+    border: 1px solid #bdbdbd;
+    border-radius: 24px;
+
+    &__wrapper {
+        padding: 40px 60px;
+    }
+
+    &__logo-img {
+        padding-top: 10px;
+    }
+
+    &__header {
+        padding-top: 25px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333333;
+    }
+
+    &__form {
+        padding-top: 35px;
+    }
+
+    &__input-elem {
+        border: 1px solid #bdbdbd;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &__input-label {
+        padding-left: 5px;
+    }
+
+    &__input {
+        border: transparent;
+        width: 100%;
+        padding: 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__submit-btn {
+        width: 100%;
+
+        background: #2f80ed;
+        color: #ffffff;
+        border: 1px solid #2f80ed;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 5px;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+
+    &__paragraph {
+        color: #828282;
+        font-size: 14px;
+        font-weight: 400;
+        padding-top: 40px;
+        text-align: center;
+    }
+
+    &__socials {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        padding-top: 30px;
+    }
+
+    &__socials-icon {
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+
+    &__login-info {
+        text-align: center;
+        padding: 40px 0 10px;
+        color: #828282;
+        font-size: 14px;
+    }
+
+    &__login-register {
+        color: #2d9cdb;
+        padding-left: 3px;
+        font-size: 14px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
