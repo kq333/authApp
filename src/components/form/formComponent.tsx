@@ -26,6 +26,8 @@ export const FormComponent = () => {
               type='email'
               required
               placeholder='Email'
+              name='email'
+              autoComplete='email'
             />
           </div>
           <div className='log-in__input-elem'>
@@ -40,6 +42,8 @@ export const FormComponent = () => {
               required
               minLength='5'
               placeholder='Password'
+              name='password'
+              autoComplete='current-password'
             />
           </div>
           <div>
@@ -62,7 +66,7 @@ export const FormComponent = () => {
           </div>
 
           <div className='log-in__login-info'>
-            Adready a member?
+            Don’t have an account yet?
             <span className='log-in__login-register'>Register</span>
           </div>
         </form>
