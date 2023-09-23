@@ -9,7 +9,7 @@ import devIcon from '../../assets/icons/devchallenges.svg';
 
 export const Navbar = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
-  const [isProfileActive, setIsProfileActive] = useState<string>('My profile');
+  const [isProfileActive, setIsProfileActive] = useState<string>(navbarIcons[0].name);
 
   const changeIcon = !isActive ? arrowDown : arrowUp;
 
