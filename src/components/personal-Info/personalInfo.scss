@@ -1,0 +1,122 @@
+.personal-info {
+    max-width: 1440px;
+
+    &__header {
+        max-width: 845px;
+        margin: auto;
+        text-align: center;
+        color: #000000;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 49px;
+        letter-spacing: -0.035em;
+    }
+
+    &__paragraph {
+        max-width: 845px;
+        margin: auto;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 25px;
+        letter-spacing: -0.035em;
+        margin-top: 20px;
+    }
+
+    &__personal-card {
+        max-width: 785px;
+        margin: auto;
+        width: 100%;
+        padding: 20px 0;
+        margin-top: 40px;
+
+
+    }
+
+    &__table-header {
+        display: flex;
+        justify-content: space-between;
+
+        border-top: 1px solid #e0e0e0;
+        border-left: 1px solid #e0e0e0;
+        border-right: 1px solid #e0e0e0;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: 20px 30px;
+    }
+
+    &__block-header {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 33px;
+        letter-spacing: -0.035em;
+    }
+
+    &__block-btn {
+        border: 1px solid #828282;
+        color: #828282;
+        border-radius: 12px;
+        background-color: #ffffff;
+        padding: 10px 25px;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+    }
+
+    &__block-paragraph {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: -0.035em;
+        color: #828282;
+    }
+
+
+    &__card-item {
+        border: 1px solid #E0E0E0;
+        padding: 20px 30px;
+
+
+
+        &:nth-child(n):not(:last-child) {
+          border-bottom: transparent;
+        }
+
+        &:nth-child(6) {
+          border-bottom-left-radius: 12px;
+          border-bottom-right-radius: 12px;
+        }
+      }
+
+
+
+      &__card-item-wrapper {
+        display: flex;
+        max-width: 300px;
+        justify-content: space-between;
+      }
+
+      &__card-item-about {
+      max-width: 70px;
+      width: 100%;
+
+
+      }
+
+      &__card-item-about-edit {
+        display: block;
+
+        &--isActive {
+          display: none;
+        }
+      }
+
+
+
+
+
+
+}
