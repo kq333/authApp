@@ -6,13 +6,13 @@ import { socialIcons } from '../../../utils/helpers';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
 import lockIcon from '../../assets/icons/form/lock.svg';
-import devicon from '../../assets/icons/devchallenges.svg';
+import devIcon from '../../assets/icons/devchallenges.svg';
 
 export const FormComponent = () => {
   return (
     <div className='log-in'>
       <div className='log-in__wrapper'>
-        <img className='log-in__logo-img' src={devicon} alt='logo' />
+        <img className='log-in__logo-img' src={devIcon} alt='logo' />
         <h2 className='log-in__header'>Login</h2>
         <form className='log-in__form' method='POST'>
           <div className='log-in__input-elem'>
