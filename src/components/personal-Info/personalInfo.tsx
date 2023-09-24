@@ -6,7 +6,7 @@ interface Props {
   editForm: (event: boolean) => void;
 }
 
-export const PersonalInfo: React.FC = ({ editForm }) => {
+export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
   const userDatas = {
     name: 'Rafal',
     img: '',
