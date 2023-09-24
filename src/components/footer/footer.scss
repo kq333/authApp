@@ -1,0 +1,15 @@
+.footer {
+    width: 100%;
+    margin: auto;
+
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        color: #828282;
+        font-size: 14px;
+    }
+
+    &__creator {
+        font-weight: 600;
+    }
+}
