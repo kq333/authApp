@@ -1,5 +1,6 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setLoginEmail, setLoginPassword } from '../../features/authSlice';
 import './loginForm.scss';
 
 import { socialIcons } from '../../../utils/helpers';
@@ -9,16 +10,37 @@ import lockIcon from '../../assets/icons/form/lock.svg';
 import devIcon from '../../assets/icons/devchallenges.svg';
 
 interface Props {
-  openComponent:() => void;
+  openComponent: () => void;
 }
 
-export const LoginForm: React.FC<Props> = ({openComponent}) => {
+export const LoginForm: React.FC<Props> = ({ openComponent }) => {
+  const [emailValue, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
+
+  const handlerEmailValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+  };
+
+  const handlerPasswordValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordValue = e.target.value;
+    setPassword(passwordValue);
+  };
+
+  const sendData = (e) => {
+    e.preventDefault();
+    dispatch(setLoginEmail(emailValue));
+    dispatch(setLoginPassword(password));
+  };
+
   return (
     <div className='log-in'>
       <div className='log-in__wrapper'>
         <img className='log-in__logo-img' src={devIcon} alt='logo' />
         <h2 className='log-in__header'>Login</h2>
-        <form className='log-in__form' method='POST'>
+        <form className='log-in__form' method='POST' onSubmit={sendData}>
           <div className='log-in__input-elem'>
             <label htmlFor='mail' className='log-in__input-label'>
               <img src={emailIcon} alt='email icon' />
@@ -32,6 +54,8 @@ export const LoginForm: React.FC<Props> = ({openComponent}) => {
               placeholder='Email'
               name='email'
               autoComplete='email'
+              value={emailValue}
+              onChange={handlerEmailValue}
             />
           </div>
           <div className='log-in__input-elem'>
@@ -48,6 +72,8 @@ export const LoginForm: React.FC<Props> = ({openComponent}) => {
               placeholder='Password'
               name='password'
               autoComplete='current-password'
+              value={password}
+              onChange={handlerPasswordValue}
             />
           </div>
           <div>
@@ -71,7 +97,12 @@ export const LoginForm: React.FC<Props> = ({openComponent}) => {
 
           <div className='log-in__login-info'>
             Don’t have an account yet?
-            <span className='log-in__login-register' onClick={()=> openComponent()}>Register</span>
+            <span
+              className='log-in__login-register'
+              onClick={() => openComponent()}
+            >
+              Register
+            </span>
           </div>
         </form>
       </div>
