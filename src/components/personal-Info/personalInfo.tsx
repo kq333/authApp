@@ -1,4 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { auth } from '../../../utils/fireBase';
+import { onAuthStateChanged } from 'firebase/auth';
+
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getDatabase, ref, get } from 'firebase/database';
+
+import { DataUser } from '../../../type/type';
 
 import './personalInfo.scss';
 
@@ -7,16 +17,13 @@ interface Props {
 }
 
 export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
-  const userDatas = {
-    name: 'Rafal',
-    img: '',
-    bio: 'dsdsdsdss',
-    phone: '7838383',
-    email: 'ww@wp.pl',
-    password: '*******',
-  };
-
-  const [userData, setUserData] = useState(userDatas);
+  const [userData, setUserData] = useState<DataUser>({
+    name: '',
+    phone: '',
+    email: '',
+    photo: '',
+    password: '',
+  });
 
   const [editElem, setEditElem] = useState<boolean>(false);
 
@@ -24,6 +31,49 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
     setEditElem(!editElem);
     editForm(!editElem);
   };
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userData = {
+          name: user.displayName,
+          phone: user.phoneNumber,
+          email: user.email,
+          photo: user.photoURL,
+          password: '*'.repeat(user.email?.length - 3),
+          bio: user.bio,
+        };
+        setUserData(userData);
+      } else {
+        setUserData(null);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const database = getDatabase();
+      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
+      const snapshot = await get(databaseRef);
+
+      if (snapshot.exists()) {
+        const dataBase = snapshot.val();
+        const { bio, phoneNumber } = dataBase;
+
+        setUserData((prevUserData) => {
+          return {
+            ...prevUserData,
+            bio: bio,
+            phone: phoneNumber,
+          };
+        });
+      } else {
+        console.log('No data found for the user.');
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className='personal-info'>
@@ -57,8 +107,13 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
             <li className='personal-info__card-item' key={key}>
               <div className='personal-info__card-item-wrapper'>
                 <span className='personal-info__card-item-name'>{key}</span>
-
-                <span className='personal-info__card-item-about'>{value}</span>
+                {key === 'photo' ? (
+                  <img className='personal-info__card-item-img' src={value} alt='User Photo' />
+                ) : (
+                  <span className='personal-info__card-item-about'>
+                    {value}
+                  </span>
+                )}
               </div>
             </li>
           ))}
