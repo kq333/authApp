@@ -57,6 +57,56 @@
         color: #828282;
         padding-left: 30px;
         text-transform: uppercase;
+        display: flex;
+        align-items: center;
+    }
+
+    &__default-img {
+        width: 72px;
+        height: 72px;
+        border: 1px solid #bdbdbd;
+        border-radius: 8px;
+
+        &::before {
+            content: url('../../../src//assets/icons/photo/camera.svg');
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 72px;
+            height: 72px;
+        }
+    }
+
+    &__custom-file-label {
+        display: flex;
+        
+        &::before {
+            content: url('../../../src//assets/icons/photo/camera.svg');
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 72px;
+            height: 72px;
+        }
+    }
+
+    &__uploade-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        border: 1px solid #bdbdbd;
+        padding: 5px;
+    }
+
+    &__user-icon {
+        width: 72px;
+        height: 72px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.15;
     }
 
     &__elem-input {
