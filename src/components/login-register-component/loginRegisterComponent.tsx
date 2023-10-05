@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { LoginForm } from '../Login-form';
 import { RegisterForm } from '../register-form';
 
+import './loginRegisterComponent.scss'
+
 export const LoginRegisterComponent = () => {
   const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -11,7 +13,7 @@ export const LoginRegisterComponent = () => {
   };
 
   return (
-    <div>
+    <div className='form'>
       {isActive ? (
         <LoginForm openComponent={openComponent} />
       ) : (
