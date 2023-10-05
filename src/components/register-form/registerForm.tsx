@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  setRegisterEmail,
-  setRegisterPassword,
-} from '../../features/authSlice';
+import { registerUser } from '../../features/authSlice';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
-import lockIcon from '../../assets/icons/form/lock.svg';
-import devIcon from '../../assets/icons/devchallenges.svg';
+import lockIcon from '../../assets/icons/form/lock.svg'
 import { socialIcons } from '../../../utils/helpers';
 
 import './registerForm.scss';
@@ -32,16 +28,17 @@ export const RegisterForm: React.FC<Props> = ({ openComponent }) => {
     setPassword(passwordValue);
   };
 
-  const sendData = (e) => {
+  const sendData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setRegisterEmail(emailValue));
-    dispatch(setRegisterPassword(password));
+
+    dispatch(
+      registerUser({ registerEmail: emailValue, registerPassword: password }),
+    );
   };
 
   return (
     <div className='log-in'>
       <div className='log-in__wrapper'>
-        <img className='log-in__logo-img' src={devIcon} alt='logo' />
         <h2 className='log-in__header'>Register Now</h2>
         <form className='log-in__form' method='POST' onSubmit={sendData}>
           <div className='log-in__input-elem'>
