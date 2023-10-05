@@ -69,6 +69,10 @@
     line-height: 18px;
     letter-spacing: -0.035em;
     color: #828282;
+
+    @media (max-width: 424px) {
+      font-size: 11px;
+    }
   }
 
   &__card-item {
@@ -87,13 +91,19 @@
 
   &__card-item-wrapper {
     display: flex;
-    max-width: 300px;
-    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__card-item-name {
+    width: 40%;
   }
 
   &__card-item-about {
-    max-width: 70px;
-    width: 100%;
+    width: 60%;
+  }
+
+  &__card-item-img {
+    height: 20px;
   }
 
   &__card-item-about-edit {
