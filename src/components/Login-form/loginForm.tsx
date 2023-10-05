@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLoginEmail, setLoginPassword } from '../../features/authSlice';
+import { loginUser } from '../../features/authSlice';
 import './loginForm.scss';
 
 import { socialIcons } from '../../../utils/helpers';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
 import lockIcon from '../../assets/icons/form/lock.svg';
-import devIcon from '../../assets/icons/devchallenges.svg';
 
 interface Props {
   openComponent: () => void;
@@ -29,16 +28,14 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
     setPassword(passwordValue);
   };
 
-  const sendData = (e) => {
+  const sendData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setLoginEmail(emailValue));
-    dispatch(setLoginPassword(password));
+    dispatch(loginUser({ email: emailValue, password }));
   };
 
   return (
     <div className='log-in'>
       <div className='log-in__wrapper'>
-        <img className='log-in__logo-img' src={devIcon} alt='logo' />
         <h2 className='log-in__header'>Login</h2>
         <form className='log-in__form' method='POST' onSubmit={sendData}>
           <div className='log-in__input-elem'>
