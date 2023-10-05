@@ -4,7 +4,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { updateProfile, updatePassword } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
-import { ref, set } from 'firebase/database';
+import { ref, set, get } from 'firebase/database';
+
+import { useDispatch } from 'react-redux';
+import { setEditChanges } from '../../features/authSlice';
 
 import './personEdit.scss';
 
@@ -24,12 +27,25 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user.photoURL) {
-        setUserPhoto(user.photoURL);
+    const fetchData = async () => {
+      const database = getDatabase();
+      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
+      const snapshot = await get(databaseRef);
+
+      if (snapshot.exists()) {
+        const dataBase = snapshot.val();
+        const { photo } = dataBase;
+
+        setUserPhoto(photo);
+      } else {
+        console.log('No data found for the user.');
       }
-    });
+    };
+
+    fetchData();
   }, []);
 
   const handlerCloseComponent = () => {
@@ -68,6 +84,10 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
       const reader = new FileReader();
 
       reader.onload = (e) => {
+        if (userPhoto.length > 0) {
+          setUserPhoto('');
+        }
+
         setUserPhoto(e.target.result);
       };
 
@@ -107,6 +127,7 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
       );
 
       const bioInfoRef = ref(db, 'users/' + auth.currentUser.uid + '/bio');
+      const photoInfoRef = ref(db, 'users/' + auth.currentUser.uid + '/photo');
 
       if (userPassword.length > 0) {
         updatePassword(auth.currentUser, userPassword);
@@ -125,7 +146,7 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
       }
 
       if (userPhoto.length > 0) {
-        await updateAuth('photoURL', userPhoto);
+        set(photoInfoRef, userPhoto);
       }
 
       console.log('User data updated successfully.');
@@ -134,6 +155,7 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
     }
 
     handlerCloseComponent();
+    dispatch(setEditChanges(true));
   };
 
   return (
