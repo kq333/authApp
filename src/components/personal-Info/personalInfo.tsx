@@ -8,6 +8,9 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getDatabase, ref, get } from 'firebase/database';
 
+import { useDispatch } from 'react-redux';
+import { setEditChanges } from '../../features/authSlice';
+
 import { DataUser } from '../../../type/type';
 
 import './personalInfo.scss';
@@ -27,9 +30,12 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
 
   const [editElem, setEditElem] = useState<boolean>(false);
 
+  const dispatch = useDispatch();
+
   const handlerEditBtn = () => {
     setEditElem(!editElem);
     editForm(!editElem);
+    dispatch(setEditChanges(false));
   };
 
   useEffect(() => {
@@ -39,9 +45,8 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
           name: user.displayName,
           phone: user.phoneNumber,
           email: user.email,
-          photo: user.photoURL,
+          photo: '',
           password: '*'.repeat(user.email?.length - 3),
-          bio: user.bio,
         };
         setUserData(userData);
       } else {
@@ -58,13 +63,14 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
 
       if (snapshot.exists()) {
         const dataBase = snapshot.val();
-        const { bio, phoneNumber } = dataBase;
+        const { bio, phoneNumber, photo } = dataBase;
 
         setUserData((prevUserData) => {
           return {
             ...prevUserData,
             bio: bio,
             phone: phoneNumber,
+            photo: photo,
           };
         });
       } else {
@@ -108,7 +114,11 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
               <div className='personal-info__card-item-wrapper'>
                 <span className='personal-info__card-item-name'>{key}</span>
                 {key === 'photo' ? (
-                  <img className='personal-info__card-item-img' src={value} alt='User Photo' />
+                  <img
+                    className='personal-info__card-item-img'
+                    src={value}
+                    alt='User Photo'
+                  />
                 ) : (
                   <span className='personal-info__card-item-about'>
                     {value}
