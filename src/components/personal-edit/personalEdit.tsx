@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { auth } from '../../../utils/fireBase';
+import { onAuthStateChanged } from 'firebase/auth';
+
+import { updateProfile, updatePassword } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
+import { ref, set } from 'firebase/database';
 
 import './personEdit.scss';
 
 import backIcon from '../../assets/icons/personal/chevron-left.svg';
+import photoIcon from '../../assets/icons/photo/camera.svg';
+import UserIcon from '../../assets/icons/photo/person.svg';
 
 interface Props {
   closeEditComponent: (event: boolean) => void;
@@ -10,10 +18,122 @@ interface Props {
 
 export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
   const [isActive, setIsActive] = useState<boolen>(false);
+  const [userName, setUserName] = useState<string>('');
+  const [userBio, setUserBio] = useState<string>('');
+  const [userPhone, setUserPhone] = useState<string>('');
+  const [userPhoto, setUserPhoto] = useState<string>('');
+  const [userPassword, setUserPassword] = useState<string>('');
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user.photoURL) {
+        setUserPhoto(user.photoURL);
+      }
+    });
+  }, []);
 
   const handlerCloseComponent = () => {
     setIsActive(!isActive);
     closeEditComponent(isActive);
+  };
+
+  const userNames = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(event);
+  };
+
+  const userBios = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserBio(event);
+  };
+
+  const userPhones = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPhone(event);
+  };
+
+  const userPhotos = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPhoto(event);
+  };
+
+  const userEmails = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(event);
+  };
+
+  const userPasswords = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPassword(event);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setUserPhoto(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      setUserPhoto('');
+    }
+  };
+
+  async function updateAuth(key: string, value: string): Promise<void> {
+    try {
+      if (key === 'displayName') {
+        await updateProfile(auth.currentUser, {
+          displayName: value,
+        });
+      }
+
+      if (key === 'photoURL') {
+        await updateProfile(auth.currentUser, {
+          photoURL: value,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const saveUserData = async (e) => {
+    e.preventDefault();
+
+    try {
+      const db = getDatabase();
+
+      const phoneNumberRef = ref(
+        db,
+        'users/' + auth.currentUser.uid + '/phoneNumber',
+      );
+
+      const bioInfoRef = ref(db, 'users/' + auth.currentUser.uid + '/bio');
+
+      if (userPassword.length > 0) {
+        updatePassword(auth.currentUser, userPassword);
+      }
+
+      if (userBio.length > 0) {
+        set(bioInfoRef, userBio);
+      }
+
+      if (userPhone.length > 0) {
+        set(phoneNumberRef, userPhone);
+      }
+
+      if (userName.length > 0) {
+        await updateAuth('displayName', userName);
+      }
+
+      if (userPhoto.length > 0) {
+        await updateAuth('photoURL', userPhoto);
+      }
+
+      console.log('User data updated successfully.');
+    } catch (error) {
+      console.error('Error updating user data:', error);
+    }
+
+    handlerCloseComponent();
   };
 
   return (
@@ -39,12 +159,37 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
         </p>
 
         <div className='edit-page__edit-photo'>
-          <img src={backIcon} alt='' />
-          <span className='edit-page__edit-photo-text'>Change photo</span>
+          <label className='edit-page__custom-file-label' htmlFor='imageInput'>
+            {userPhoto ? (
+              <img
+                className='edit-page__uploade-img'
+                src={userPhoto}
+                alt='user image'
+              />
+            ) : (
+              <div className='edit-page__default-img'>
+                <img
+                  className='edit-page__user-icon'
+                  src={UserIcon}
+                  alt='user icon'
+                />
+
+                <div></div>
+              </div>
+            )}{' '}
+            <span className='edit-page__edit-photo-text'>CHANGE PHOTO</span>
+          </label>
+          <input
+            type='file'
+            id='imageInput'
+            accept='image/*'
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
         </div>
         <br></br>
 
-        <form className='edit-page__form'>
+        <form className='edit-page__form' onSubmit={saveUserData}>
           <div>
             <label htmlFor='name' className='edit-page__elem-label'>
               Name
@@ -57,11 +202,12 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
                 type='text'
                 name='name'
                 id='name'
-                required
                 minLength={4}
                 placeholder='Enter yout name'
                 className='edit-page__elem-input-elem'
                 autoComplete='email'
+                value={userName}
+                onChange={(e) => userNames(e.target.value)}
               />
             </div>
           </div>
@@ -77,11 +223,12 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
                 type='textarea'
                 name='bio'
                 id='bio'
-                required
                 minLength={4}
                 placeholder='Enter yout bio'
                 className='edit-page__elem-input-elem'
                 rows={10}
+                value={userBio}
+                onChange={(e) => userBios(e.target.value)}
               />
             </div>
           </div>
@@ -98,30 +245,12 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
                 type='number'
                 name='phone'
                 id='phone'
-                required
                 minLength={9}
+                min={0}
                 placeholder='Enter yout phone'
                 className='edit-page__elem-input-elem'
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor='email' className='edit-page__elem-label'>
-              Email
-            </label>
-            <br></br>
-            <br></br>
-            <div className='edit-page__elem-input'>
-              <input
-                type='email'
-                name='email'
-                id='email'
-                required
-                minLength={9}
-                placeholder='Enter yout email'
-                className='edit-page__elem-input-elem'
-                autoComplete='email'
+                value={userPhone}
+                onChange={(e) => userPhones(e.target.value)}
               />
             </div>
           </div>
@@ -137,22 +266,20 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
                 type='password'
                 name='password'
                 id='password'
-                required
-                minLength={9}
+                minLength={4}
                 placeholder='Enter yout password'
                 className='edit-page__elem-input-elem'
                 autoComplete='current-password'
+                value={userPassword}
+                onChange={(e) => userPasswords(e.target.value)}
               />
             </div>
-
           </div>
-          
+
           <br></br>
 
           <input className='edit-page__submit-btn' type='submit' value='Save' />
-
         </form>
-
       </div>
     </div>
   );
