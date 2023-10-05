@@ -13,6 +13,7 @@ interface State {
 const initialState: State = {
   isLogin: false,
   rejectToRegister: false,
+  isEditSaved:  false,
 };
 
 export const registerUser = createAsyncThunk(
@@ -82,6 +83,10 @@ const authSlice = createSlice({
     setLogOut: (state, action) => {
       state.isLogin = action.payload;
     },
+
+    setEditChanges: (state, action) => {
+      state.isEditSaved = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -104,6 +109,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLogOut } = authSlice.actions;
+export const { setLogOut, setEditChanges } = authSlice.actions;
 
 export default authSlice.reducer;
