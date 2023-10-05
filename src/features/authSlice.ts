@@ -1,47 +1,109 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { auth } from '../../utils/fireBase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 interface State {
   isLogin: boolean;
-  name: string;
-  email: string;
-  registerEmail: string;
-  registerPassword: string;
+  rejectToRegister: boolean;
 }
 
 const initialState: State = {
   isLogin: false,
-  name: '', // Add a name property if needed
-  email: '',
-  registerEmail: '',
-  registerPassword: '',
+  rejectToRegister: false,
 };
 
-export const fireBaseSlice = createSlice({
-  name: 'fireBase',
+export const registerUser = createAsyncThunk(
+  'fireBase/registerUser',
+  async (
+    {
+      registerEmail,
+      registerPassword,
+    }: { registerEmail: string; registerPassword: string },
+    { rejectWithValue },
+  ) => {
+    try {
+      await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword,
+      );
+      return 'Registration successful';
+    } catch (error) {
+      console.error('Error registering user:', error.message);
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const loginUser = createAsyncThunk(
+  'fireBase/loginUser',
+  async (
+    { email, password }: { email: string; password: string },
+    { rejectWithValue },
+  ) => {
+
+    try {
+
+      if (!email) {
+        throw new Error('Email is required', email, password);
+      }
+
+      await signInWithEmailAndPassword(auth, email, password);
+
+      return 'Login successful';
+    } catch (error) {
+      console.error('Error logging in:', error.message);
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const logoutUser = createAsyncThunk(
+  'fireBase/logoutUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      await auth.signOut();
+      console.log('Logout successful');
+      return 'Logout successful';
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    setLoginEmail: (state, action) => {
-      state.email = action.payload;
-      state.isLogin = true;
+    setLogOut: (state, action) => {
+      state.isLogin = action.payload;
     },
-    setLoginPassword: (state, action) => {
-      state.password = action.payload; 
-    },
-    setRegisterEmail: (state, action) => {
-      state.registerEmail = action.payload;
-      state.isLogin = true;
-    },
-    setRegisterPassword: (state, action) => {
-      state.registerPassword = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {})
+      .addCase(registerUser.fulfilled, (state) => {
+        state.rejectToRegister = true;
+        state.isLogin = true;
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.rejectToRegister = true;
+        console.error('Error registering user:');
+      })
+      .addCase(loginUser.pending, (state) => {})
+      .addCase(loginUser.fulfilled, (state) => {
+        state.isLogin = true;
+      })
+      .addCase(loginUser.rejected, (state) => {
+        console.error('Error logging in:');
+      });
   },
 });
 
-export const {
-  setLoginEmail,
-  setLoginPassword,
-  setRegisterEmail,
-  setRegisterPassword,
-} = fireBaseSlice.actions;
+export const { setLogOut } = authSlice.actions;
 
-export default fireBaseSlice.reducer;
+export default authSlice.reducer;
