@@ -1,6 +1,5 @@
 .log-in {
     max-width: 474px;
-    width: 100%;
     border: 1px solid #bdbdbd;
     border-radius: 24px;
 
@@ -49,7 +48,6 @@
 
     &__submit-btn {
         width: 100%;
-
         background: #2f80ed;
         color: #ffffff;
         border: 1px solid #2f80ed;
@@ -76,6 +74,10 @@
         justify-content: center;
         gap: 22px;
         padding-top: 30px;
+
+        @media (max-width: 767px) {
+            gap: 10px;
+        }
     }
 
     &__socials-icon {
