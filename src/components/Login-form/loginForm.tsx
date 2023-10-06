@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../store/hooks';
+
 import { loginUser } from '../../features/authSlice';
-
-import './loginForm.scss';
-
 import { socialIcons } from '../../../utils/helpers';
+import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
 import lockIcon from '../../assets/icons/form/lock.svg';
-import errorIcon from '../../assets/error-icon.png'
+import errorIcon from '../../assets/error-icon.png';
+import './loginForm.scss';
 
 interface Props {
   openComponent: () => void;
@@ -20,9 +20,8 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
   const [emailValue, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { loginUserError } = useAppSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-
-  const UnregisterUser = useSelector((state: any) => state.FireBaseReducer.loginUserError);
 
   const handlerEmailValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailValue = e.target.value;
@@ -84,14 +83,16 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
             <input type='submit' value='Login' className='log-in__submit-btn' />
           </div>
 
-          {UnregisterUser.length > 0 ?
-          <div className='log-in__error-info'>
-            <img className='log-in__error-icon' src={errorIcon} alt="error icon" />
-            <p className='log-in__error-log-in'>{UnregisterUser}</p>
-          </div>
-
-
-          : null}
+          {loginUserError.length > 0 ? (
+            <div className='log-in__error-info'>
+              <img
+                className='log-in__error-icon'
+                src={errorIcon}
+                alt='error icon'
+              />
+              <p className='log-in__error-log-in'>{loginUserError}</p>
+            </div>
+          ) : null}
 
           <p className='log-in__paragraph'>
             or continue with these social profile

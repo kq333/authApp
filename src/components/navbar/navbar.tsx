@@ -4,15 +4,15 @@ import { useDispatch } from 'react-redux';
 import { setLogOut } from '../../features/authSlice';
 import { auth } from '../../../utils/fireBase';
 import { navbarIcons } from '../../../utils/helpers';
-import { useSelector } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getDatabase, ref, get } from 'firebase/database';
-
+import { useAppSelector } from '../../store/hooks';
 
 import '../navbar/navbar.scss';
 import arrowDown from '../../assets/icons/navbar/arrowDown.svg';
 import arrowUp from '../../assets/icons/navbar/arrowUp.svg';
 import personIcon from '../../assets/icons/photo/person.svg';
+import { RootState } from '../../store/store';
 
 export const Navbar = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -20,13 +20,14 @@ export const Navbar = () => {
     navbarIcons[0].name,
   );
 
-  const [userData, setUserData] = useState<{ email: string | null; photo: string } | null>(null);
-
+  const [userData, setUserData] = useState<{
+    email: string | null;
+    photo: string;
+  } | null>(null);
 
   const changeIcon = !isActive ? arrowDown : arrowUp;
 
-  const isEditDataChanged = useSelector((state: any) => state.FireBaseReducer.isEditSaved);
-
+  const { isEditSaved } = useAppSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -55,9 +56,7 @@ export const Navbar = () => {
     return () => {
       listen();
     };
-
-
-  }, [isEditDataChanged]);
+  }, [isEditSaved]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +83,7 @@ export const Navbar = () => {
     };
 
     fetchData();
-  }, [isEditDataChanged]);
+  }, [isEditSaved]);
 
   return (
     <nav className='navbar'>
