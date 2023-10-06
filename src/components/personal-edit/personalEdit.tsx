@@ -96,7 +96,7 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
     }
   }
 
-  const saveUserData = async (e) => {
+  const saveUserData = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
