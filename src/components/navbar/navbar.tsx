@@ -91,10 +91,9 @@ export const Navbar = () => {
             <div className='navbar__login-group-one'>
               <img
                 className='navbar__user-img'
-                src={userData ? userData.photo : personIcon}
+                src={userData.photo ? userData.photo : personIcon}
                 alt='user image'
               />
-
               <span className='navbar__user-email'>
                 {userData ? userData.email : ''}{' '}
               </span>
