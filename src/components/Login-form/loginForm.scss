@@ -4,7 +4,6 @@
     border: 1px solid #bdbdbd;
     border-radius: 24px;
 
-
     &__wrapper {
         padding: 40px 60px;
     }
@@ -103,9 +102,20 @@
         }
     }
 
+    &__error-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding-top: 10px;
+    }
+
     &__error-log-in {
         color: red;
-        padding-top: 10px;
-        text-align: center;
+    }
+
+    &__error-icon {
+        width: 20px;
+        height: 20px;
     }
 }
