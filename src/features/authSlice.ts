@@ -5,7 +5,6 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { State } from '../../type/type';
-import firebase from 'firebase/compat/app';
 
 const initialState: State = {
   isLogin: false,
