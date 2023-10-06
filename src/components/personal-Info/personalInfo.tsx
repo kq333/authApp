@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 
 import { auth } from '../../../utils/fireBase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
 import { getDatabase, ref, get } from 'firebase/database';
 import { useDispatch } from 'react-redux';
 import { setEditChanges } from '../../features/authSlice';
@@ -40,25 +37,33 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
   };
 
   useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         const userData = {
-          name: user.displayName,
-          phone: user.phoneNumber,
-          email: user.email,
+          name: user.displayName || '',
+          phone: user.phoneNumber || '',
+          email: user.email || '',
           photo: '',
-          password: '*'.repeat(user.email?.length - 3),
+          password: '*'.repeat((user.email?.length ?? 0) - 3),
         };
         setUserData(userData);
       } else {
-        setUserData(null);
+        setUserData({
+          name: '',
+          phone: '',
+          email: '',
+          photo: '',
+          password: '',
+        });
       }
     });
   }, []);
 
+
   useEffect(() => {
     const fetchData = async () => {
       const database = getDatabase();
+      if (auth.currentUser) {
       const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
       const snapshot = await get(databaseRef);
 
@@ -77,6 +82,7 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
       } else {
         console.log('No data found for the user.');
       }
+    }
     };
 
     fetchData();

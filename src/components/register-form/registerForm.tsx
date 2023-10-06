@@ -31,9 +31,10 @@ export const RegisterForm: React.FC<Props> = ({ openComponent }) => {
   const sendData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(
+    dispatch<any>(
       registerUser({ registerEmail: emailValue, registerPassword: password }),
-    );
+    )
+
   };
 
   return (
@@ -68,7 +69,7 @@ export const RegisterForm: React.FC<Props> = ({ openComponent }) => {
               className='log-in__input'
               type='password'
               required
-              minLength='5'
+              minLength={5}
               placeholder='Password'
               name='password'
               autoComplete='current-password'

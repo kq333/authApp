@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { logoutUser, setLogOut } from '../../features/authSlice';
+import { setLogOut } from '../../features/authSlice';
 import { auth } from '../../../utils/fireBase';
 import { navbarIcons } from '../../../utils/helpers';
 import { useSelector } from 'react-redux';
-
 import { onAuthStateChanged } from 'firebase/auth';
-
-import { getFirestore } from 'firebase/firestore';
 import { getDatabase, ref, get } from 'firebase/database';
+
 
 import '../navbar/navbar.scss';
 import arrowDown from '../../assets/icons/navbar/arrowDown.svg';
@@ -22,22 +20,19 @@ export const Navbar = () => {
     navbarIcons[0].name,
   );
 
-  const [userData, setUserData] = useState<string>('');
+  const [userData, setUserData] = useState<{ email: string | null; photo: string } | null>(null);
+
 
   const changeIcon = !isActive ? arrowDown : arrowUp;
 
-  const isEditDataChanged = useSelector(
-    (state) => state.FireBaseReducer.isEditSaved,
-  );
+  const isEditDataChanged = useSelector((state: any) => state.FireBaseReducer.isEditSaved);
 
-  console.log(isEditDataChanged);
 
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      dispatch(logoutUser());
       dispatch(setLogOut(false));
     } catch (error) {
       console.error('Error logging out:', error);
@@ -56,27 +51,35 @@ export const Navbar = () => {
         setUserData(null);
       }
     });
+
+    return () => {
+      listen();
+    };
+
+
   }, [isEditDataChanged]);
 
   useEffect(() => {
     const fetchData = async () => {
       const database = getDatabase();
-      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
-      const snapshot = await get(databaseRef);
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const databaseRef = ref(database, 'users/' + currentUser.uid);
+        const snapshot = await get(databaseRef);
 
-      if (snapshot.exists()) {
-        const dataBase = snapshot.val();
-        const { photo } = dataBase;
+        if (snapshot.exists()) {
+          const dataBase = snapshot.val();
+          const { photo } = dataBase;
 
-        setUserData((prevUserData) => {
-          return {
-            ...prevUserData,
-
-            photo: photo,
-          };
-        });
-      } else {
-        console.log('No data found for the user.');
+          setUserData((prevUserData: any) => {
+            return {
+              ...prevUserData,
+              photo: photo,
+            };
+          });
+        } else {
+          console.log('No data found for the user.');
+        }
       }
     };
 
@@ -91,7 +94,7 @@ export const Navbar = () => {
             <div className='navbar__login-group-one'>
               <img
                 className='navbar__user-img'
-                src={userData.photo ? userData.photo : personIcon}
+                src={userData?.photo ? userData.photo : personIcon}
                 alt='user image'
               />
               <span className='navbar__user-email'>
@@ -107,12 +110,12 @@ export const Navbar = () => {
 
             {isActive && (
               <div className='navbar__login-group-two'>
-                {navbarIcons.map((elem, index) => (
+                {navbarIcons.map((elem) => (
                   <div
                     className='navbar__login-group-two-wrapper'
                     key={elem.id}
                     onClick={
-                      elem.name === 'Logout' ? () => handleLogout() : null
+                      elem.name === 'Logout' ? () => handleLogout() : undefined
                     }
                   >
                     <div

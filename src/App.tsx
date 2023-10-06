@@ -8,7 +8,7 @@ import { LoginRegisterComponent } from './components/login-register-component';
 function App() {
   const [isLogin, setIsLogin] = useState(false);
 
-  const isUserLogin = useSelector((state) => state.FireBaseReducer.isLogin);
+  const isUserLogin = useSelector((state: any) => state.FireBaseReducer.isLogin);
 
   useEffect(() => {
     setIsLogin(isLogin);
