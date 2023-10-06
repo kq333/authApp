@@ -8,12 +8,15 @@ import {
 interface State {
   isLogin: boolean;
   rejectToRegister: boolean;
+  isEditSaved: boolean;
+  loginUserError: string,
 }
 
 const initialState: State = {
   isLogin: false,
   rejectToRegister: false,
   isEditSaved:  false,
+  loginUserError: '',
 };
 
 export const registerUser = createAsyncThunk(
@@ -32,7 +35,7 @@ export const registerUser = createAsyncThunk(
         registerPassword,
       );
       return 'Registration successful';
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error registering user:', error.message);
       return rejectWithValue(error.message);
     }
@@ -49,13 +52,13 @@ export const loginUser = createAsyncThunk(
     try {
 
       if (!email) {
-        throw new Error('Email is required', email, password);
+        throw new Error('Email is required');
       }
 
       await signInWithEmailAndPassword(auth, email, password);
 
       return 'Login successful';
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error logging in:', error.message);
       return rejectWithValue(error.message);
     }
@@ -69,7 +72,7 @@ export const logoutUser = createAsyncThunk(
       await auth.signOut();
       console.log('Logout successful');
       return 'Logout successful';
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error logging out:', error.message);
       return rejectWithValue(error.message);
     }
@@ -90,21 +93,22 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {})
       .addCase(registerUser.fulfilled, (state) => {
         state.rejectToRegister = true;
         state.isLogin = true;
+        state.loginUserError = ''
+        state.loginUserError = ''
       })
       .addCase(registerUser.rejected, (state) => {
         state.rejectToRegister = true;
         console.error('Error registering user:');
       })
-      .addCase(loginUser.pending, (state) => {})
       .addCase(loginUser.fulfilled, (state) => {
         state.isLogin = true;
+        state.loginUserError = ''
       })
       .addCase(loginUser.rejected, (state) => {
-        console.error('Error logging in:');
+       state.loginUserError = 'Bad login or password'
       });
   },
 });
