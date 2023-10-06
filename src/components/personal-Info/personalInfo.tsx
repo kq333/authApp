@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react';
 
 import { auth } from '../../../utils/fireBase';
 import { onAuthStateChanged } from 'firebase/auth';
-
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getDatabase, ref, get } from 'firebase/database';
-
 import { useDispatch } from 'react-redux';
 import { setEditChanges } from '../../features/authSlice';
-
 import { DataUser } from '../../../type/type';
+
+import personUser from '../../assets/icons/photo/person.svg';
 
 import './personalInfo.scss';
 
@@ -29,6 +28,8 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
   });
 
   const [editElem, setEditElem] = useState<boolean>(false);
+
+  const userImg = userData.photo.length > 0 ? userData.photo : personUser;
 
   const dispatch = useDispatch();
 
@@ -116,7 +117,7 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
                 {key === 'photo' ? (
                   <img
                     className='personal-info__card-item-img'
-                    src={value}
+                    src={userImg}
                     alt='User Photo'
                   />
                 ) : (
