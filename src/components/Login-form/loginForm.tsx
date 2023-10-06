@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
 import { useAppSelector } from '../../store/hooks';
-
 import { loginUser } from '../../features/authSlice';
-import { socialIcons } from '../../../utils/helpers';
 import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
 
@@ -93,21 +91,6 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
               <p className='log-in__error-log-in'>{loginUserError}</p>
             </div>
           ) : null}
-
-          <p className='log-in__paragraph'>
-            or continue with these social profile
-          </p>
-
-          <div className='log-in__socials'>
-            {socialIcons.map((icon) => (
-              <img
-                className='log-in__socials-icon'
-                key={icon.id}
-                src={icon.img}
-                alt={`${icon.name} icon`}
-              />
-            ))}
-          </div>
 
           <div className='log-in__login-info'>
             Don’t have an account yet?

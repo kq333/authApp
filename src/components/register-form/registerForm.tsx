@@ -4,7 +4,6 @@ import { registerUser } from '../../features/authSlice';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
 import lockIcon from '../../assets/icons/form/lock.svg'
-import { socialIcons } from '../../../utils/helpers';
 
 import './registerForm.scss';
 
@@ -83,21 +82,6 @@ export const RegisterForm: React.FC<Props> = ({ openComponent }) => {
               value='Register now'
               className='log-in__submit-btn'
             />
-          </div>
-
-          <p className='log-in__paragraph'>
-            or continue with these social profile
-          </p>
-
-          <div className='log-in__socials'>
-            {socialIcons.map((icon) => (
-              <img
-                className='log-in__socials-icon'
-                key={icon.id}
-                src={icon.img}
-                alt={`${icon.name} icon`}
-              />
-            ))}
           </div>
 
           <div className='log-in__login-info'>
