@@ -10,6 +10,7 @@ import { socialIcons } from '../../../utils/helpers';
 
 import emailIcon from '../../assets/icons/form/mail.svg';
 import lockIcon from '../../assets/icons/form/lock.svg';
+import errorIcon from '../../assets/error-icon.png'
 
 interface Props {
   openComponent: () => void;
@@ -83,7 +84,14 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
             <input type='submit' value='Login' className='log-in__submit-btn' />
           </div>
 
-          {UnregisterUser.length > 0 ? <p className='log-in__error-log-in'>{UnregisterUser}</p> : null}
+          {UnregisterUser.length > 0 ?
+          <div className='log-in__error-info'>
+            <img className='log-in__error-icon' src={errorIcon} alt="error icon" />
+            <p className='log-in__error-log-in'>{UnregisterUser}</p>
+          </div>
+
+
+          : null}
 
           <p className='log-in__paragraph'>
             or continue with these social profile
