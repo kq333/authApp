@@ -5,3 +5,10 @@ export interface DataUser {
     photo:string,
     password: string,
 }
+
+export interface State {
+    isLogin: boolean;
+    rejectToRegister: boolean;
+    isEditSaved: boolean;
+    loginUserError: string,
+  }
