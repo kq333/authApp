@@ -18,10 +18,8 @@ function App() {
     <div className='page'>
       <div className='page__wrapper'>
         <main className='page__main'>
-          <section>{isLogin && <EditSavedUserData />}</section>
-
           <section className='page__section'>
-            {!isLogin && <LoginRegisterComponent />}
+            { !isLogin ? <LoginRegisterComponent /> : <EditSavedUserData />}
           </section>
         </main>
       </div>
