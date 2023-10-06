@@ -26,7 +26,7 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
 
   const [editElem, setEditElem] = useState<boolean>(false);
 
-  const userImg = userData.photo.length > 0 ? userData.photo : personUser;
+  const userImg = userData.photo?.length > 0 ? userData.photo : personUser;
 
   const dispatch = useDispatch();
 
