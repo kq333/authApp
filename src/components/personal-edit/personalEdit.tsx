@@ -29,25 +29,6 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const database = getDatabase();
-      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
-      const snapshot = await get(databaseRef);
-
-      if (snapshot.exists()) {
-        const dataBase = snapshot.val();
-        const { photo } = dataBase;
-
-        setUserPhoto(photo);
-      } else {
-        console.log('No data found for the user.');
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const handlerCloseComponent = () => {
     setIsActive(!isActive);
     closeEditComponent(isActive);
@@ -77,7 +58,7 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
     setUserPassword(event);
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -157,6 +138,25 @@ export const PersonEdit: React.FC<Props> = ({ closeEditComponent }) => {
     handlerCloseComponent();
     dispatch(setEditChanges(true));
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const database = getDatabase();
+      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
+      const snapshot = await get(databaseRef);
+
+      if (snapshot.exists()) {
+        const dataBase = snapshot.val();
+        const { photo } = dataBase;
+
+        setUserPhoto(photo);
+      } else {
+        console.log('No data found for the user.');
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className='edit-page'>
