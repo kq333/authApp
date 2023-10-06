@@ -59,30 +59,29 @@ export const PersonalInfo: React.FC<Props> = ({ editForm }) => {
     });
   }, []);
 
-
   useEffect(() => {
     const fetchData = async () => {
       const database = getDatabase();
       if (auth.currentUser) {
-      const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
-      const snapshot = await get(databaseRef);
+        const databaseRef = ref(database, 'users/' + auth.currentUser.uid);
+        const snapshot = await get(databaseRef);
 
-      if (snapshot.exists()) {
-        const dataBase = snapshot.val();
-        const { bio, phoneNumber, photo } = dataBase;
+        if (snapshot.exists()) {
+          const dataBase = snapshot.val();
+          const { bio, phoneNumber, photo } = dataBase;
 
-        setUserData((prevUserData) => {
-          return {
-            ...prevUserData,
-            bio: bio,
-            phone: phoneNumber,
-            photo: photo,
-          };
-        });
-      } else {
-        console.log('No data found for the user.');
+          setUserData((prevUserData) => {
+            return {
+              ...prevUserData,
+              bio: bio,
+              phone: phoneNumber,
+              photo: photo,
+            };
+          });
+        } else {
+          console.log('No data found for the user.');
+        }
       }
-    }
     };
 
     fetchData();

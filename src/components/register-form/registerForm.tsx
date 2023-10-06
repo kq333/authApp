@@ -33,7 +33,6 @@ export const RegisterForm: React.FC<Props> = ({ openComponent }) => {
     dispatch<any>(
       registerUser({ registerEmail: emailValue, registerPassword: password }),
     )
-
   };
 
   return (
