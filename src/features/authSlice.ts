@@ -4,18 +4,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-
-interface State {
-  isLogin: boolean;
-  rejectToRegister: boolean;
-  isEditSaved: boolean;
-  loginUserError: string,
-}
+import { State } from '../../type/type';
 
 const initialState: State = {
   isLogin: false,
   rejectToRegister: false,
-  isEditSaved:  false,
+  isEditSaved: false,
   loginUserError: '',
 };
 
@@ -48,9 +42,7 @@ export const loginUser = createAsyncThunk(
     { email, password }: { email: string; password: string },
     { rejectWithValue },
   ) => {
-
     try {
-
       if (!email) {
         throw new Error('Email is required');
       }
@@ -88,16 +80,16 @@ const authSlice = createSlice({
     },
 
     setEditChanges: (state, action) => {
-      state.isEditSaved = action.payload
-    }
+      state.isEditSaved = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.fulfilled, (state) => {
         state.rejectToRegister = true;
         state.isLogin = true;
-        state.loginUserError = ''
-        state.loginUserError = ''
+        state.loginUserError = '';
+        state.loginUserError = '';
       })
       .addCase(registerUser.rejected, (state) => {
         state.rejectToRegister = true;
@@ -105,10 +97,10 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state) => {
         state.isLogin = true;
-        state.loginUserError = ''
+        state.loginUserError = '';
       })
       .addCase(loginUser.rejected, (state) => {
-       state.loginUserError = 'Bad login or password'
+        state.loginUserError = 'Bad login or password';
       });
   },
 });
