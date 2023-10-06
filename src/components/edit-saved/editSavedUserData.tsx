@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Navbar } from '../navbar';
 import { PersonalInfo } from '../personal-Info';
