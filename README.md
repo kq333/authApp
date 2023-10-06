@@ -1,4 +1,4 @@
-# React + TypeScript + Vite + FireBase
+# React + TypeScript + Vite + FireBase + Redux
 
 The authentication app using Firebase that allows users to log in and manage their personal data.
 Users can log in to the app, update their personal information, and save the changes.
