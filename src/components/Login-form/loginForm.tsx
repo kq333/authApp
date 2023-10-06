@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { loginUser } from '../../features/authSlice';
+
 import './loginForm.scss';
 
 import { socialIcons } from '../../../utils/helpers';
@@ -18,6 +21,8 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
 
   const dispatch = useDispatch();
 
+  const UnregisterUser = useSelector((state: any) => state.FireBaseReducer.loginUserError);
+
   const handlerEmailValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailValue = e.target.value;
     setEmail(emailValue);
@@ -30,6 +35,7 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
 
   const sendData = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // @ts-ignore: Bypass TypeScript checking for this specific dispatch
     dispatch(loginUser({ email: emailValue, password }));
   };
 
@@ -65,7 +71,7 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
               className='log-in__input'
               type='password'
               required
-              minLength='5'
+              minLength={5}
               placeholder='Password'
               name='password'
               autoComplete='current-password'
@@ -76,6 +82,8 @@ export const LoginForm: React.FC<Props> = ({ openComponent }) => {
           <div>
             <input type='submit' value='Login' className='log-in__submit-btn' />
           </div>
+
+          {UnregisterUser.length > 0 ? <p className='log-in__error-log-in'>{UnregisterUser}</p> : null}
 
           <p className='log-in__paragraph'>
             or continue with these social profile
