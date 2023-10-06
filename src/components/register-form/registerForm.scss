@@ -61,32 +61,6 @@
         }
     }
 
-    &__paragraph {
-        color: #828282;
-        font-size: 14px;
-        font-weight: 400;
-        padding-top: 40px;
-        text-align: center;
-    }
-
-    &__socials {
-        display: flex;
-        justify-content: center;
-        gap: 22px;
-        padding-top: 30px;
-
-        @media (max-width: 767px) {
-            gap: 10px;
-        }
-    }
-
-    &__socials-icon {
-        &:hover {
-            cursor: pointer;
-            opacity: 0.8;
-        }
-    }
-
     &__login-info {
         text-align: center;
         padding: 40px 0 10px;
