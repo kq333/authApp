@@ -9,4 +9,11 @@
     padding-left: 2%;
     padding-right: 2%;
   }
+
+  &__nav-bar {
+    position: fixed;
+    background-color: #ffffff;
+    top: 0;
+    width: 100%;
+  }
 }
