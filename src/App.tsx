@@ -1,5 +1,4 @@
 import './App.scss';
-import React from 'react';
 
 import { EditSavedUserData } from './components/edit-saved';
 import { LoginRegisterComponent } from './components/login-register-component';
