@@ -6,6 +6,6 @@ Users can log in to the app, update their personal information, and save the cha
 
 
 
-[DEMO](https://6521177647086d535e413be2--peaceful-rugelach-ac309f.netlify.app)
+[DEMO](https://652119cdac0ed7568050cedc--scintillating-queijadas-cd83e0.netlify.app)
 
 
