@@ -4,7 +4,7 @@ import { Navbar } from '../navbar';
 import { PersonalInfo } from '../personal-Info';
 import { PersonEdit } from '../personal-edit';
 
-import './editSavedUserData.scss'
+import './editSavedUserData.scss';
 
 export const EditSavedUserData = () => {
   const [editElem, setEditElem] = useState<boolean>(false);
@@ -19,8 +19,11 @@ export const EditSavedUserData = () => {
 
   return (
     <div className='edit-user-data'>
+      <div className='edit-user-data__nav-bar'>
         <Navbar />
-        <div className='edit-user-data__wrapper'>
+      </div>
+
+      <div className='edit-user-data__wrapper'>
         {editElem ? (
           <PersonEdit closeEditComponent={closeEditComponent} />
         ) : (
